@@ -12,6 +12,7 @@
 #define NUM_THREADS 4
 
 #include "vplanet.h"
+#include "lsoda.h"
 
 void PropsAuxGeneral(BODY *body, CONTROL *control) {
   /* Recompute the mean motion, necessary for most modules */

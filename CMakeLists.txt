@@ -12,19 +12,11 @@ endif()
 file(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" VPLANET_V)
 add_compile_definitions(VPLANET_VERSION="${VPLANET_V}")
 
-add_library(_vplanet src/atmesc.c		 src/galhabit.c	         src/spinbody.c
-                     src/binary.c		 src/halt.c			         src/stellar.c
-                     src/body.c		 	 src/magmoc.c		         src/system.c
-                     src/control.c    src/module.c	           src/thermint.c
-                     src/distorb.c	   src/options.c		       src/update.c
-                     src/distrot.c	   src/output.c		         src/verify.c
-                     src/eqtide.c		 src/poise.c			       src/vplanet.c
-                     src/evolve.c		 src/flare.c             src/radheat.c)
+add_subdirectory(src)
 
 # Executable
 add_executable(vplanet src/main.c)
 target_link_libraries(vplanet _vplanet)
-target_include_directories(vplanet PUBLIC src/)
 
 # Python Extension
 if (NOT SKBUILD)

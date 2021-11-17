@@ -1,0 +1,3 @@
+[submodule "src/liblsoda"]
+	path = src/liblsoda
+	url = https://github.com/Nicholaswogan/liblsoda.git
