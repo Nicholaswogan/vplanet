@@ -719,3 +719,42 @@ void Evolve(BODY *body, CONTROL *control, FILES *files, MODULE *module,
   }
   //     printf("%d\n",body[1].iBadImpulse);
 }
+
+typedef struct LSODA_DATA LSODA_DATA;
+struct LSODA_DATA{
+  BODY *body;
+  CONTROL *control;
+  SYSTEM *system;
+  UPDATE *update;
+  fnUpdateVariable ***fnUpdate;
+};
+
+int fex(double t, double *y, double *ydot, void *data)
+{
+  double Dt;
+  int iBody, iVar, iEqn;
+  LSODA_DATA *ldata;
+  BODY *body;
+  CONTROL *control;
+  SYSTEM *system;
+  UPDATE *update;
+  fnUpdateVariable ***fnUpdate;
+  
+  ldata = (LSODA_DATA *) data;
+  body = ldata->body;
+  control = ldata->control;
+  system = ldata->system;
+  update = ldata->update;
+  fnUpdate = ldata->fnUpdate;
+  
+  // set the time
+  control->Evolve.dTime = t;
+  
+  // We need to loop through and set pdVar to y
+
+  // then we can compute derivatives
+  
+  // then we load derivatives into ydot
+  
+	return(0);
+}
