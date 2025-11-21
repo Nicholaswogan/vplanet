@@ -12,12 +12,18 @@ GCC_FLAGS1 = -fPIC -c
 GCC_FLAGS2 = -shared -Wl,-install_name,vplanetlib.so
 endif
 
+SRC := $(wildcard src/*.c)
+LSODA_ALL := $(wildcard src/liblsoda/*.c)
+# Exclude deprecated/diagnostic sources from liblsoda that don't compile in this context
+LSODA_SRC := $(filter-out src/liblsoda/ewset.c src/liblsoda/printcf.c src/liblsoda/cfode_static.c,$(LSODA_ALL))
+INCLUDES := -Isrc -Isrc/liblsoda
+
 default:
 	-python setup.py clean --all
 	-python setup.py develop
 
 legacy:
-	-gcc -o bin/vplanet src/*.c -lm -DGITVERSION=\"$(GITVERSION)\"
+	-gcc -o bin/vplanet $(SRC) $(LSODA_SRC) -lm $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 	@echo ""
 	@echo "=========================================================================================================="
 	@echo 'To add vplanet to your $$PATH, please run the appropriate command for your shell type:'
@@ -30,13 +36,13 @@ legacy:
 	@echo "=========================================================================================================="
 
 debug:
-	-gcc -g -D DEBUG -o bin/vplanet src/*.c -lm -DGITVERSION=\"$(GITVERSION)\"
+	-gcc -g -D DEBUG -o bin/vplanet $(SRC) $(LSODA_SRC) -lm $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 
 debug_no_AE:
-	-gcc -g -o bin/vplanet src/*.c -lm -DGITVERSION=\"$(GITVERSION)\"
+	-gcc -g -o bin/vplanet $(SRC) $(LSODA_SRC) -lm $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 
 opt:
-	-gcc -o bin/vplanet src/*.c -lm -O3 -DGITVERSION=\"$(GITVERSION)\"
+	-gcc -o bin/vplanet $(SRC) $(LSODA_SRC) -lm -O3 $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 	@echo ""
 	@echo "=========================================================================================================="
 	@echo 'To add vplanet to your $$PATH, please run the appropriate command for your shell type:'
@@ -49,31 +55,31 @@ opt:
 	@echo "=========================================================================================================="
 
 cpp:
-	g++ -o bin/vplanet src/*.c -lm -O3 -fopenmp -fpermissive -w -DGITVERSION=\"$(GITVERSION)\"
+	g++ -o bin/vplanet $(SRC) $(LSODA_SRC) -lm -O3 -fopenmp -fpermissive -w $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 
 warnings:
-		-gcc -g -D DEBUG -Wunused-but-set-variable -Wunused-variable -Wfloat-equal -o bin/vplanet src/*.c -lm -DGITVERSION=\"$(GITVERSION)\"
+		-gcc -g -D DEBUG -Wunused-but-set-variable -Wunused-variable -Wfloat-equal -o bin/vplanet $(SRC) $(LSODA_SRC) -lm $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 
 parallel:
-	gcc -o bin/vplanet src/*.c -lm -O3 -fopenmp -DGITVERSION=\"$(GITVERSION)\"
+	gcc -o bin/vplanet $(SRC) $(LSODA_SRC) -lm -O3 -fopenmp $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 
 profile:
-	-gcc -pg -o bin/vplanet src/*.c -lm -DGITVERSION=\"$(GITVERSION)\"
+	-gcc -pg -o bin/vplanet $(SRC) $(LSODA_SRC) -lm $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 
 optprof:
-	-gcc -pg -o bin/vplanet src/*.c -lm -O3 -DGITVERSION=\"$(GITVERSION)\"
+	-gcc -pg -o bin/vplanet $(SRC) $(LSODA_SRC) -lm -O3 $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 
 sanitize:
-	-gcc -g -fsanitize=address -o bin/vplanet src/*.c -lm -DGITVERSION=\"$(GITVERSION)\"
+	-gcc -g -fsanitize=address -o bin/vplanet $(SRC) $(LSODA_SRC) -lm $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 
 test:
-	-gcc -o bin/vplanet src/*.c -lm -O3 -DGITVERSION=\"$(GITVERSION)\"
+	-gcc -o bin/vplanet $(SRC) $(LSODA_SRC) -lm -O3 $(INCLUDES) -DGITVERSION=\"$(GITVERSION)\"
 	-pytest --tb=short
 
 coverage:
 	-rm -f ./gcov/*.gcda ./gcov/*.gcno ./.coverage
 	-mkdir -p ./gcov
-	-cd gcov && gcc -coverage -o ./../bin/vplanet ./../src/*.c -lm
+	-cd gcov && gcc -coverage -o ./../bin/vplanet ./../src/*.c ./../src/liblsoda/*.c -lm -I./../src -I./../src/liblsoda
 	-python -m pytest --tb=short tests --junitxml=./junit/test-results.xml
 	-lcov --capture --directory ./gcov --output-file ./.coverage
 	-genhtml ./.coverage --output-directory ./gcov/html
@@ -82,7 +88,7 @@ docs:
 	-make -C docs html && echo 'Documentation available at `docs/.build/html/index.html`.'
 
 shared:
-	-gcc ${GCC_FLAGS1} src/*.c
+	-gcc ${GCC_FLAGS1} $(INCLUDES) $(SRC) $(LSODA_SRC)
 	-gcc ${GCC_FLAGS2} -o bin/vplanetlib.so *.o -lc
 
 clean:

@@ -50,11 +50,19 @@ macros = [
 if sys.platform.startswith("win"):
     macros += [("VPLANET_ON_WINDOWS", 1)]
 
+thirdparty_sources_all = glob("src/liblsoda/*.c")
+thirdparty_sources = [
+    src
+    for src in thirdparty_sources_all
+    if not src.endswith("ewset.c")
+    and not src.endswith("printcf.c")
+    and not src.endswith("cfode_static.c")
+]
 ext_modules = [
     Extension(
         "vplanet.vplanet_core",
-        glob("src/*.c"),
-        include_dirs=["src"],
+        glob("src/*.c") + thirdparty_sources,
+        include_dirs=["src", "src/liblsoda"],
         language="c",
         define_macros=macros,
     )
@@ -91,7 +99,7 @@ setup(
     cmdclass=cmdclass,
     include_package_data=True,
 #    package_data={'': ['VERSION']},
-    package_data={'': ['src/*.[ch]']},
+    package_data={'': ['src/*.[ch]', 'src/liblsoda/*.[ch]']},
     data_files=[('', ['VERSION'])],
     zip_safe=False,
     entry_points={"console_scripts": ["vplanet=vplanet.wrapper:_entry_point"]},

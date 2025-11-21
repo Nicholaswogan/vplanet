@@ -89,6 +89,9 @@ int main_impl(int argc, char *argv[]) {
   /* Set to IntegrationMethod to 0, so default can be
      assigned if necessary */
   control.Evolve.iOneStep = 0;
+  control.Evolve.dLsodaRtol = 1e-8;
+  control.Evolve.dLsodaAtol = 1e-10;
+  control.Evolve.iLsodaMxStep = 0;
 
   /* Copy executable file name to the files struct. */
   files.cExe = NULL;

@@ -13,6 +13,7 @@
 /* 0 => Not input by user, verify assigns default */
 #define EULER 1
 #define RUNGEKUTTA 2
+#define LSODA 3
 
 #define NO_INTEGRATION 0
 #define FORWARD_INTEGRATION 1
@@ -37,5 +38,7 @@ void EulerStep(BODY *, CONTROL *, SYSTEM *, UPDATE *, fnUpdateVariable ***,
 
 void RungeKutta4Step(BODY *, CONTROL *, SYSTEM *, UPDATE *,
                      fnUpdateVariable ***, double *, int);
+void LsodaStep(BODY *, CONTROL *, SYSTEM *, UPDATE *, fnUpdateVariable ***,
+               double *, int);
 
 /* @endcond */

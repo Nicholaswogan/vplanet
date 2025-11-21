@@ -2019,8 +2019,20 @@ void LogIntegration(CONTROL *control, FILE *fp) {
     fprintf(fp, "Euler");
   } else if (control->Evolve.iOneStep == RUNGEKUTTA) {
     fprintf(fp, "Runge-Kutta4");
+  } else if (control->Evolve.iOneStep == LSODA) {
+    fprintf(fp, "LSODA (stiff/non-stiff adaptive)");
   }
   fprintf(fp, "\n");
+
+  if (control->Evolve.iOneStep == LSODA) {
+    fprintf(fp, "LSODA rtol/atol: ");
+    fprintd(fp, control->Evolve.dLsodaRtol, control->Io.iSciNot,
+            control->Io.iDigits);
+    fprintf(fp, " / ");
+    fprintd(fp, control->Evolve.dLsodaAtol, control->Io.iSciNot,
+            control->Io.iDigits);
+    fprintf(fp, " (mxstep=%d)\n", control->Evolve.iLsodaMxStep);
+  }
 
   fprintf(fp, "Direction: ");
   if (control->Evolve.bDoBackward) {

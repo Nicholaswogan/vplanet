@@ -91,7 +91,7 @@ iNumPrimaryVariable,int iBody,int *iVar,int iID) { *iPrimaryVariable = -1; if
       update[iBody].iaModule[*iVar] =
             malloc(iNumPrimaryVariable * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[*iVar] =
               dTmpPrimaryVariable;
         control->Evolve.tmpUpdate[iBody].iNumBodies[*iVar] =
@@ -257,7 +257,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
           malloc(update[iBody].iNumVars * sizeof(int *));
     control->Evolve.tmpUpdate[iBody].iaBody =
           malloc(update[iBody].iNumVars * sizeof(int **));
-    if (control->Evolve.iOneStep == RUNGEKUTTA) {
+    if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
       for (iSubStep = 0; iSubStep < 4; iSubStep++) {
         control->Evolve.daDeriv[iSubStep][iBody] =
               malloc(update[iBody].iNumVars * sizeof(double));
@@ -287,7 +287,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumVelX * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dVelX;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -331,7 +331,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumVelY * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dVelY;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -375,7 +375,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumVelZ * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dVelZ;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -420,7 +420,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumPositionX * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dPositionX;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -465,7 +465,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumPositionY * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dPositionY;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -510,7 +510,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumPositionZ * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dPositionZ;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -557,7 +557,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumWaterMassMOAtm * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dWaterMassMOAtm;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -602,7 +602,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumWaterMassSol * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dWaterMassSol;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -647,7 +647,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumSurfTemp * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dSurfTemp;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -692,7 +692,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumSolidRadius * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dSolidRadius;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -737,7 +737,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumPotTemp * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dPotTemp;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -782,7 +782,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumOxygenMassMOAtm * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dOxygenMassMOAtm;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -827,7 +827,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumOxygenMassSol * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dOxygenMassSol;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -872,7 +872,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumHydrogenMassSpace * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dHydrogenMassSpace;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -917,7 +917,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumOxygenMassSpace * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dOxygenMassSpace;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -962,7 +962,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumCO2MassMOAtm * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dCO2MassMOAtm;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1007,7 +1007,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumCO2MassSol * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dCO2MassSol;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1056,7 +1056,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum26AlCore * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d26AlNumCore;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1102,7 +1102,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum26AlMan * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d26AlNumMan;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1148,7 +1148,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum40KCore * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d40KNumCore;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1194,7 +1194,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum40KMan * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d40KNumMan;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1240,7 +1240,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum40KCrust * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d40KNumCrust;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1286,7 +1286,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum232ThCore * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d232ThNumCore;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1332,7 +1332,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum232ThMan * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d232ThNumMan;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1378,7 +1378,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum232ThCrust * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d232ThNumCrust;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1424,7 +1424,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum235UCore * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d235UNumCore;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1470,7 +1470,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum235UMan * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d235UNumMan;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1516,7 +1516,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum235UCrust * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d235UNumCrust;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1562,7 +1562,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum238UCore * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d238UNumCore;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1608,7 +1608,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum238UMan * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d238UNumMan;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1654,7 +1654,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNum238UCrust * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].d238UNumCrust;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1700,7 +1700,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumEnvelopeMass * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dEnvelopeMass;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1752,7 +1752,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumDynEllip * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dDynEllip;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1799,7 +1799,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumHecc * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dHecc;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1846,7 +1846,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumKecc * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dKecc;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1898,7 +1898,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumLuminosity * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dLuminosity;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1942,7 +1942,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
     malloc(update[iBody].iNumObl*sizeof(int)); update[iBody].iaModule[iVar] =
     malloc(update[iBody].iNumObl*sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
     &control->Evolve.tmpBody[iBody].dObliquity;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -1982,7 +1982,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumPinc * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dPinc;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2027,7 +2027,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumQinc * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dQinc;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2073,7 +2073,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumRadius * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dRadius;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2118,7 +2118,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumMass * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dMass;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2163,7 +2163,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumRot * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dRotRate;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2208,7 +2208,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumSemi * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dSemi;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2258,7 +2258,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumSurfaceWaterMass * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dSurfaceWaterMass;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2304,7 +2304,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumOxygenMass * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dOxygenMass;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2350,7 +2350,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumOxygenMantleMass * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dOxygenMantleMass;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2396,7 +2396,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumTemperature * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dTemperature;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2442,7 +2442,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumRadGyra * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dRadGyra;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2488,7 +2488,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumTCore * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dTCore;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2533,7 +2533,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumTMan * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dTMan;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2578,7 +2578,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumXobl * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dXobl;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2624,7 +2624,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumYobl * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dYobl;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2670,7 +2670,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumZobl * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dZobl;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2718,7 +2718,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumCBPR * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dCBPR;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2764,7 +2764,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumCBPZ * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dCBPZ;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2811,7 +2811,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumCBPPhi * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dCBPPhi;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2858,7 +2858,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumCBPRDot * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dCBPRDot;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2905,7 +2905,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumCBPZDot * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dCBPZDot;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -2952,7 +2952,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumCBPPhiDot * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dCBPPhiDot;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -3006,7 +3006,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
     //         update[iBody].iaModule[iVar] =
     //         malloc(update[iBody].iNumIceMass*sizeof(int));
     //
-    //         if (control->Evolve.iOneStep == RUNGEKUTTA) {
+    //         if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
     //
     //           control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
     //           &control->Evolve.tmpBody[iBody].daIceMass[iLat];
@@ -3048,7 +3048,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumEccX * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dEccX;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -3093,7 +3093,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumEccY * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dEccY;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -3138,7 +3138,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumEccZ * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dEccZ;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -3184,7 +3184,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumAngMX * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dAngMX;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -3230,7 +3230,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumAngMY * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dAngMY;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -3276,7 +3276,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumAngMZ * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dAngMZ;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -3328,7 +3328,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumLXUV * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dLXUV;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -3374,7 +3374,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumLostAngMom * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dLostAngMom;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =
@@ -3420,7 +3420,7 @@ void InitializeUpdate(BODY *body, CONTROL *control, MODULE *module,
       update[iBody].iaModule[iVar] =
             malloc(update[iBody].iNumLostEng * sizeof(int));
 
-      if (control->Evolve.iOneStep == RUNGEKUTTA) {
+      if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
         control->Evolve.tmpUpdate[iBody].pdVar[iVar] =
               &control->Evolve.tmpBody[iBody].dLostEng;
         control->Evolve.tmpUpdate[iBody].iNumBodies[iVar] =

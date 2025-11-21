@@ -1753,6 +1753,9 @@ struct EVOLVE {
   int iNumBodies;    /**< Number of Bodies to be Integrated */
   int iOneStep;      /**< Integration Method number */
   double dCurrentDt; /**< Current timestep */
+  double dLsodaRtol; /**< Relative tolerance for LSODA */
+  double dLsodaAtol; /**< Absolute tolerance for LSODA */
+  int iLsodaMxStep;  /**< Maximum internal steps for LSODA */
 
   // These are to store midpoint derivative info in RK4.
   BODY *tmpBody;     /**< Temporary BODY struct */

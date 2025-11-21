@@ -264,7 +264,7 @@ void InitializeControlEvolve(BODY *body, CONTROL *control, MODULE *module,
 
   /* Currently this only matters for RK4 integration. This should
      be generalized for any integration method. */
-  if (control->Evolve.iOneStep == RUNGEKUTTA) {
+  if (control->Evolve.iOneStep == RUNGEKUTTA || control->Evolve.iOneStep == LSODA) {
     control->Evolve.daDeriv     = malloc(4 * sizeof(double **));
     control->Evolve.daDerivProc = malloc(4 * sizeof(double ***));
     for (iSubStep = 0; iSubStep < 4; iSubStep++) {

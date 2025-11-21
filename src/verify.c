@@ -513,6 +513,8 @@ void AssignIntegrationMethod(CONTROL *control, OPTIONS *options,
     *fnOneStep = &EulerStep;
   } else if (control->Evolve.iOneStep == RUNGEKUTTA) {
     *fnOneStep = &RungeKutta4Step;
+  } else if (control->Evolve.iOneStep == LSODA) {
+    *fnOneStep = &LsodaStep;
   } else {
     fvFormattedString(&cTmp, options[OPT_INTEGRATIONMETHOD].cDefault);
     if (control->Io.iVerbose >= VERBINPUT) {
@@ -523,10 +525,12 @@ void AssignIntegrationMethod(CONTROL *control, OPTIONS *options,
     if (memcmp(sLower(cTmp), "e", 1) == 0) {
       control->Evolve.iOneStep = EULER;
       *fnOneStep               = &EulerStep;
-    }
-    if (memcmp(sLower(cTmp), "r", 1) == 0) {
+    } else if (memcmp(sLower(cTmp), "r", 1) == 0) {
       control->Evolve.iOneStep = RUNGEKUTTA;
       *fnOneStep               = &RungeKutta4Step;
+    } else if (memcmp(sLower(cTmp), "l", 1) == 0) {
+      control->Evolve.iOneStep = LSODA;
+      *fnOneStep               = &LsodaStep;
     }
   }
 }
@@ -629,6 +633,12 @@ void VerifyIntegration(BODY *body, CONTROL *control, FILES *files,
   AssignStopTime(control, files, options, system);
   VerifyOutputTime(control, files, options);
   AssignIntegrationMethod(control, options, fnOneStep);
+  if (control->Evolve.iOneStep == LSODA && control->Evolve.bDoBackward) {
+    fprintf(stderr,
+            "ERROR: Backward integrations are not currently supported with "
+            "LSODA.\n");
+    exit(EXIT_INPUT);
+  }
   InitializeIntegrationFiles(body, control, files, options, system);
   AssignBodyAges(body, control, files, options, system);
 }
@@ -1286,7 +1296,8 @@ void VerifyOptions(BODY *body, CONTROL *control, FILES *files, MODULE *module,
     }
 
     /* Must allocate memory in control struct for all perturbing bodies */
-    if (control->Evolve.iOneStep == RUNGEKUTTA) {
+    if (control->Evolve.iOneStep == RUNGEKUTTA ||
+        control->Evolve.iOneStep == LSODA) {
       InitializeUpdateBodyPerts(control, update, iBody);
       InitializeUpdateTmpBody(body, control, module, update, iBody);
     }

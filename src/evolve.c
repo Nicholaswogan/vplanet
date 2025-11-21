@@ -671,8 +671,8 @@ void Evolve(BODY *body, CONTROL *control, FILES *files, MODULE *module,
   /* Write out initial conditions */
   WriteOutput(body, control, files, output, system, update, fnWrite);
 
-  /* If Runge-Kutta need to copy actual update to that in
-     control->Evolve. This transfer all the meta-data about the
+  /* If Runge-Kutta/LSODA need to copy actual update to that in
+     control->Evolve. This transfers all the meta-data about the
      struct. */
   UpdateCopy(control->Evolve.tmpUpdate, update, control->Evolve.iNumBodies);
 

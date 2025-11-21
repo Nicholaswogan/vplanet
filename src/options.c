@@ -2065,17 +2065,77 @@ void ReadIntegrationMethod(BODY *body, CONTROL *control, FILES *files,
       control->Evolve.iOneStep = EULER;
     } else if (memcmp(sLower(cTmp), "r", 1) == 0) {
       control->Evolve.iOneStep = RUNGEKUTTA;
+    } else if (memcmp(sLower(cTmp), "l", 1) == 0) {
+      control->Evolve.iOneStep = LSODA;
     } else {
       if (control->Io.iVerbose >= VERBERR) {
         fprintf(stderr, "ERROR: Unknown argument to %s: %s.\n", options->cName,
                 cTmp);
-        fprintf(stderr, "Options are Euler.\n");
+        fprintf(stderr, "Options are Euler, Runge-Kutta4, or LSODA.\n");
       }
       LineExit(files->Infile[iFile].cIn, lTmp);
     }
     UpdateFoundOption(&files->Infile[iFile], options, lTmp, iFile);
   }
   /* If not input, VerifyIntegration assigns default */
+}
+
+void ReadLsodaRtol(BODY *body, CONTROL *control, FILES *files,
+                   OPTIONS *options, SYSTEM *system, int iFile) {
+  int lTmp = -1;
+  double dTmp;
+
+  AddOptionDouble(files->Infile[iFile].cIn, options->cName, &dTmp, &lTmp,
+                  control->Io.iVerbose);
+  if (lTmp >= 0) {
+    CheckDuplication(files, options, files->Infile[iFile].cIn, lTmp,
+                     control->Io.iVerbose);
+    control->Evolve.dLsodaRtol = dTmp;
+    UpdateFoundOption(&files->Infile[iFile], options, lTmp, iFile);
+  } else if (iFile == 0) {
+    AssignDefaultDouble(options, &control->Evolve.dLsodaRtol,
+                        files->iNumInputs);
+  }
+}
+
+void ReadLsodaAtol(BODY *body, CONTROL *control, FILES *files,
+                   OPTIONS *options, SYSTEM *system, int iFile) {
+  int lTmp = -1;
+  double dTmp;
+
+  AddOptionDouble(files->Infile[iFile].cIn, options->cName, &dTmp, &lTmp,
+                  control->Io.iVerbose);
+  if (lTmp >= 0) {
+    CheckDuplication(files, options, files->Infile[iFile].cIn, lTmp,
+                     control->Io.iVerbose);
+    control->Evolve.dLsodaAtol = dTmp;
+    UpdateFoundOption(&files->Infile[iFile], options, lTmp, iFile);
+  } else if (iFile == 0) {
+    AssignDefaultDouble(options, &control->Evolve.dLsodaAtol,
+                        files->iNumInputs);
+  }
+}
+
+void ReadLsodaMxStep(BODY *body, CONTROL *control, FILES *files,
+                     OPTIONS *options, SYSTEM *system, int iFile) {
+  int lTmp = -1, iTmp;
+
+  AddOptionInt(files->Infile[iFile].cIn, options->cName, &iTmp, &lTmp,
+               control->Io.iVerbose);
+  if (lTmp >= 0) {
+    CheckDuplication(files, options, files->Infile[iFile].cIn, lTmp,
+                     control->Io.iVerbose);
+    if (iTmp < 0) {
+      if (control->Io.iVerbose >= VERBERR) {
+        fprintf(stderr, "ERROR: %s must be non-negative.\n", options->cName);
+      }
+      LineExit(files->Infile[iFile].cIn, lTmp);
+    }
+    control->Evolve.iLsodaMxStep = iTmp;
+    UpdateFoundOption(&files->Infile[iFile], options, lTmp, iFile);
+  } else if (iFile == 0) {
+    AssignDefaultInt(options, &control->Evolve.iLsodaMxStep, files->iNumInputs);
+  }
 }
 
 /*
@@ -4101,13 +4161,49 @@ void InitializeOptionsGeneral(OPTIONS *options, fnReadOption fnRead[]) {
                     "sIntegrationMethod");
   fvFormattedString(
         &options[OPT_INTEGRATIONMETHOD].cDescr,
-        "Integration Method: Euler, Runge-Kutta4 (Default = Runge-Kutta4)");
+        "Integration Method: Euler, Runge-Kutta4, LSODA (Default = Runge-Kutta4)");
   fvFormattedString(&options[OPT_INTEGRATIONMETHOD].cDefault, "Runge-Kutta4");
   options[OPT_INTEGRATIONMETHOD].iType      = 3;
   options[OPT_INTEGRATIONMETHOD].iModuleBit = 0;
   options[OPT_INTEGRATIONMETHOD].bNeg       = 0;
   options[OPT_INTEGRATIONMETHOD].iFileType  = 2;
   fnRead[OPT_INTEGRATIONMETHOD]             = &ReadIntegrationMethod;
+
+  fvFormattedString(&options[OPT_LSODARTOL].cName, "dLsodaRtol");
+  fvFormattedString(&options[OPT_LSODARTOL].cDescr,
+                    "LSODA relative tolerance (scalar)");
+  fvFormattedString(&options[OPT_LSODARTOL].cDefault, "1e-8");
+  fvFormattedString(&options[OPT_LSODARTOL].cDimension, "nd");
+  options[OPT_LSODARTOL].dDefault   = 1e-8;
+  options[OPT_LSODARTOL].iType      = 2;
+  options[OPT_LSODARTOL].iModuleBit = 0;
+  options[OPT_LSODARTOL].bNeg       = 0;
+  options[OPT_LSODARTOL].iFileType  = 2;
+  fnRead[OPT_LSODARTOL]             = &ReadLsodaRtol;
+
+  fvFormattedString(&options[OPT_LSODAATOL].cName, "dLsodaAtol");
+  fvFormattedString(&options[OPT_LSODAATOL].cDescr,
+                    "LSODA absolute tolerance (scalar)");
+  fvFormattedString(&options[OPT_LSODAATOL].cDefault, "1e-10");
+  fvFormattedString(&options[OPT_LSODAATOL].cDimension, "nd");
+  options[OPT_LSODAATOL].dDefault   = 1e-10;
+  options[OPT_LSODAATOL].iType      = 2;
+  options[OPT_LSODAATOL].iModuleBit = 0;
+  options[OPT_LSODAATOL].bNeg       = 0;
+  options[OPT_LSODAATOL].iFileType  = 2;
+  fnRead[OPT_LSODAATOL]             = &ReadLsodaAtol;
+
+  fvFormattedString(&options[OPT_LSODAMXSTEP].cName, "iLsodaMxStep");
+  fvFormattedString(&options[OPT_LSODAMXSTEP].cDescr,
+                    "Maximum internal LSODA steps between outputs");
+  fvFormattedString(&options[OPT_LSODAMXSTEP].cDefault, "0");
+  fvFormattedString(&options[OPT_LSODAMXSTEP].cDimension, "nd");
+  options[OPT_LSODAMXSTEP].dDefault   = 0;
+  options[OPT_LSODAMXSTEP].iType      = 0;
+  options[OPT_LSODAMXSTEP].iModuleBit = 0;
+  options[OPT_LSODAMXSTEP].bNeg       = 0;
+  options[OPT_LSODAMXSTEP].iFileType  = 2;
+  fnRead[OPT_LSODAMXSTEP]             = &ReadLsodaMxStep;
 
   /*
    *
